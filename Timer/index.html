@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+</head>
+<body>
+    <h1>Countdown Timer</h1>
+    <label for="hours">Hours:</label>
+    <input type="number" id="hours" min="0" value="0">
+    <label for="minutes">Minutes:</label>
+    <input type="number" id="minutes" min="0" value="0">
+    <label for="seconds">Seconds:</label>
+    <input type="number" id="seconds" min="0" value="0">
+    <button id="startButton">Start</button>
+    <p id="timerDisplay"></p>
+
+    <script>
+        const hoursInput = document.getElementById("hours");
+        const minutesInput = document.getElementById("minutes");
+        const secondsInput = document.getElementById("seconds");
+        const startButton = document.getElementById("startButton");
+        const timerDisplay = document.getElementById("timerDisplay");
+
+        let intervalId;
+
+        function startTimer() {
+            const hours = parseInt(hoursInput.value, 10) || 0;
+            const minutes = parseInt(minutesInput.value, 10) || 0;
+            const seconds = parseInt(secondsInput.value, 10) || 0;
+
+            let totalSeconds = hours * 3600 + minutes * 60 + seconds;
+
+            if (totalSeconds <= 0) {
+                alert("Please enter a valid time greater than zero.");
+                return   
+            }
+
+            intervalId = setInterval(() => {
+                totalSeconds--;
+
+                const displayHours = Math.floor(totalSeconds / 3600).toString().padStart(2, "0");
+                const displayMinutes = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, "0");
+                const displaySeconds = (totalSeconds % 60).toString().padStart(2, "0");
+
+                timerDisplay.textContent = `${displayHours}:${displayMinutes}:${displaySeconds}`;
+
+                if (totalSeconds === 0) {
+                    clearInterval(intervalId);
+                    timerDisplay.textContent = "Timer Finished!";
+                }
+            }, 1000);
+
+            startButton.disabled = true; // Disable start button while timer is running
+        }
+
+        startButton.addEventListener("click", startTimer);
+    </script>
+</body>
+</html>
+
